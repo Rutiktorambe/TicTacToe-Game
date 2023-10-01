@@ -16,35 +16,42 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
-    <div class="wrapper"> 
-
-        <p class="game-info"></p>
-
-        <div class="tic-tac-toe">
-            <div class="box box1"></div>
-            <div class="box box2"></div>
-            <div class="box box3"></div>
-            <div class="box box4"></div>
-            <div class="box box5"></div>
-            <div class="box box6"></div>
-            <div class="box box7"></div>
-            <div class="box box8"></div>
-            <div class="box box9"></div>
-        </div>
-
-        <button class="btn">New Game</button>
-        <button class="btn-reset">Reset</button>
-
-
-        <footer class="footer">
-                <div> </div>
-                <div class="footer-icon">
-                  <a href="https://github.com/Rutiktorambe"><img src="assets/github-sign.png" alt="Github" width="25px"></a>
-                  <a href="https://www.linkedin.com/in/rutik-torambe-314230228/"><img src="assets/linkedin-sign.png" alt="Iinkedin" width="25px"></a>
-                </div>
-        </footer>
+  
+  <div class="overlay">
+    <div>
+      <p class="winner-message"></p>
+      <button type="button" role="button" class="restart">↻ Restart Game</button>
     </div>
+  </div>
+  <header>
+    <h1 class="main-title">Tic-Tac-Toe</h1>
+    <h1>'⭕' & '❌'</h1>
+  </header>
+  <main>
+    <div>
+      <div class="game-container">
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+      </div>
+      <p class="current-player">Current Player: <span id="current-player"></span></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div> </div>
+    <div class="footer-icon">
+      <a href="https://github.com/Rutiktorambe"><img src="assets/github-sign.png" alt="Github" width="25px"></a>
+      <a href="https://www.linkedin.com/in/rutik-torambe-314230228/"><img src="assets/linkedin-sign.png" alt="Iinkedin" width="25px"></a>
+    </div>
+</footer>
+
     <script src="index.js"></script>
 </body>
 </html>

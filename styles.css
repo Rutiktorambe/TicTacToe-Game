@@ -1,111 +1,100 @@
-*,*::before,*::after {
-    box-sizing: border-box;
+* {
+    font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
-    padding: 0;
-    font-family: 'Poppins', 'sans-serif';
+    box-sizing: border-box;
 }
 
-.wrapper{
-    width: 100vw;
-    height: 100vh;
-    background-image: url(./assets/gradient-bg.jpg);
-    background-size: cover;
-    background-position: center;
-    display: grid;
-    place-items: center;
+html, body {
+    height: 100%;
 }
 
-.game-info{
-    color:white;
-    position:absolute;
-    top:3rem;
-    left:50%;
-    transform:translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 0.5rem 3rem;
-    /* text-align:center; */
-
-}
-
-.tic-tac-toe{
-    width:90%;
-    max-width:20rem;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    aspect-ratio: 1/1;
-}
-
-
-.box{
-    position:relative;
-    width:100%;
-    aspect-ratio: 1/1;
-    cursor: pointer;
-    font-size: 3rem;
-    color:white;
-    display: flex;
-    justify-content: center;
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(76, 69, 91, 0.5);
+    backdrop-filter: saturate(2) blur(10px);
+    z-index: 1;
     align-items: center;
-}
-
-.box1, .box2, .box4, .box5{
-    border-right:2px solid white;
-    border-bottom:2px solid white;
-}
-
-.box3, .box6{
-    border-bottom: 2px solid white;
-}
-
-.box7, .box8{
-    border-right:2px solid white;
-}
-
-.btn{
-    color:white;
-    position: absolute;
-    bottom:3rem;
-    left:50%;
-    transform:translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 0.5rem 2rem;
-    cursor:pointer;
+    justify-content: center;
+    font-size: 5em;
     display: none;
+	text-align: center;
+
+    &.game-over {
+        display: flex;
+    }
+
+    .restart {
+        font-size: 2rem;
+        border-radius: 3rem;
+        padding: 1.5rem 3rem;
+        text-align: center;
+        background-color: #34495e;
+        border: 0;
+        color: white;
+        cursor: pointer;
+    }
 }
 
-.btn.active{
+body {
+    background: radial-gradient(#677889, #455362);
+    color: #FFF;
+}
+
+header {
+    text-align: center;
+    padding: 3rem 0;
+}
+.main-title {
+    font-size: 3rem;
+}
+
+main {
     display: flex;
-}
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 15em);
 
-.win{
-    background-color: rgba(0, 255, 0, 0.3);
-}
+    .game-container {
+        position: relative;
+        display: grid;
+        grid-template: repeat(3, min(85vw / 3, 200px))/repeat(3, min(85vw / 3, 200px));
+        border-radius: 0.75rem;
+        gap: 10px;
+        background: #34495e;
+        padding: 10px;
+        
+        .grid-item {
+            background-color: #eeeeee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: min(55vw / 3, 8em);
+            cursor: pointer;
+            
+            &:nth-child(1) {
+                border-top-left-radius: 0.75rem;
+            }
+            &:nth-child(3) {
+                border-top-right-radius: 0.75rem;
+            }
+            &:nth-child(7) {
+                border-bottom-left-radius: 0.75rem;
+            }
+            &:nth-child(9) {
+                border-bottom-right-radius: 0.75rem;
+            }
+        }
+    }
 
-.btn-reset{
-    color:white;
-    position: absolute;
-    bottom:3rem;
-    left:50%;
-    transform:translateX(-50%);
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 0.5rem 2rem;
-    cursor:pointer;
-    display: flex;
-}
-
-
-.btn-reset.active{
-    display: none;
+    .current-player {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 2rem;
+    }
 }
 
 .footer{
@@ -118,4 +107,5 @@
 .footer-icon {
     display: flex;
     gap: 10px;
+    padding-bottom: 20px;
 }

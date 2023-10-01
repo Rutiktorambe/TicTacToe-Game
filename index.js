@@ -1,121 +1,86 @@
-const boxes = document.querySelectorAll(".box");
-const gameInfo = document.querySelector(".game-info");
-const newGameBtn = document.querySelector(".btn");
-const resetGameBtn= document.querySelector(".btn-reset");
-
-
-let currentPlayer;
-let gameGrid;
-
-const winningPositions = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6]
+let currentPlayer = "";
+const nought = "⭕";
+const cross = "❌";
+const currentPlayerEle = document.querySelector("#current-player");
+const overlayEle = document.querySelector(".overlay");
+const winnerMsgEle = document.querySelector(".winner-message");
+const restartEle = document.querySelector(".restart");
+const GRID_ITEMS = document.querySelectorAll(".grid-item");
+const WINNING_COMBOS = [
+    // Left / Right
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8],
+	
+    // Top / Down
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	
+    // Diagonal
+	[0, 4, 8],
+	[2, 4, 6]
 ];
 
-//let's create a function to initialise the game
-function initGame() {
-    currentPlayer = "X";
-    gameGrid = ["","","","","","","","",""];
-    //UI pr empty bhi karna padega boxes ko
-    boxes.forEach((box, index) => {
-        box.innerText = "";
-        boxes[index].style.pointerEvents = "all";
-        //one more thing is missing, initialise box with css properties again
-        box.classList = `box box${index+1}`;
-    });
-    newGameBtn.classList.remove("active");
-    resetGameBtn.classList.remove("active");
-    gameInfo.innerText = `Current Player - ${currentPlayer}`;
+function init() {
+    currentPlayer = cross;
+    _showCurrentPlayer();
 }
 
-initGame();
-
-function swapTurn() {
-    if(currentPlayer === "X") {
-        currentPlayer = "O";
-    }
-    else {
-        currentPlayer = "X";
-    }
-    //UI Update
-    gameInfo.innerText = `Current Player - ${currentPlayer}`;
-}
-
-function checkGameOver() {
-    let answer = "";
-
-    winningPositions.forEach((position) => {
-        //all 3 boxes should be non-empty and exactly same in value
-        if( (gameGrid[position[0]] !== "" || gameGrid[position[1]] !== "" || gameGrid[position[2]] !== "") 
-            && (gameGrid[position[0]] === gameGrid[position[1]] ) && (gameGrid[position[1]] === gameGrid[position[2]])) {
-
-                //check if winner is X
-                if(gameGrid[position[0]] === "X") 
-                    answer = "X";
-                else {
-                    answer = "O";
-                } 
-                    
-
-                //disable pointer events
-                boxes.forEach((box) => {
-                    box.style.pointerEvents = "none";
-                })
-
-                //now we know X/O is a winner
-                boxes[position[0]].classList.add("win");
-                boxes[position[1]].classList.add("win");
-                boxes[position[2]].classList.add("win");
-            }
+function reset() {
+    overlayEle.classList.toggle("game-over");
+    winnerMsgEle.innerText = '';
+    GRID_ITEMS.forEach((item) => {
+        item.innerText = '';
     });
 
-    //it means we have a winner
-    if(answer !== "" ) {
-        gameInfo.innerText = `Winner Player - ${answer}`;
-        newGameBtn.classList.add("active");
-        resetGameBtn.classList.add("active");
-        return;
-    }
+    init();
+}
 
-    //We know, NO Winner Found, let's check whether there is tie
-    let fillCount = 0;
-    gameGrid.forEach((box) => {
-        if(box !== "" )
-            fillCount++;
+function _changeCurrentPlayer() {
+	return currentPlayer = currentPlayer === cross ? nought : cross;
+}
+
+function _showCurrentPlayer() {
+    currentPlayerEle.innerText = currentPlayer;
+}
+
+function _checkWin() {
+	return WINNING_COMBOS.some(combo => {
+        return combo.every(c => { 
+            return GRID_ITEMS[c].innerText == currentPlayer;
+        });
     });
-
-    //board is Filled, game is TIE
-    if(fillCount === 9) {
-        gameInfo.innerText = "Game Tied !";
-        newGameBtn.classList.add("active");
-        resetGameBtn.classList.add("active");
-    }
-
 }
 
-function handleClick(index) {
-    if(gameGrid[index] === "" ) {
-        boxes[index].innerText = currentPlayer;
-        gameGrid[index] = currentPlayer;
-        boxes[index].style.pointerEvents = "none";
-        //swap karo turn ko
-        swapTurn();
-        //check koi jeet toh nahi gya
-        checkGameOver();
-    }
+function _checkDraw() {
+    return [...GRID_ITEMS].every(item => {
+        return item.innerText.includes(cross) || item.innerText.includes(nought);
+    });
 }
 
-boxes.forEach((box, index) => {
-    box.addEventListener("click", () => {
-        handleClick(index);
-    })
+GRID_ITEMS.forEach((item) => {
+	item.addEventListener("click", e => {
+        if(e.currentTarget.innerText) return;
+		e.currentTarget.innerText = currentPlayer;
+        if(_checkDraw()) {
+            winnerMsgEle.innerText = `It's a Draw!`
+            overlayEle.classList.toggle("game-over");
+            return;
+        }
+        
+        if(_checkWin()) {
+            winnerMsgEle.innerText = `${currentPlayer} Wins!`
+            overlayEle.classList.toggle("game-over");
+            return;
+        }
+        _changeCurrentPlayer();
+        _showCurrentPlayer();
+	});
 });
 
-newGameBtn.addEventListener("click", initGame);
-resetGameBtn.addEventListener("click", initGame);
+restartEle.addEventListener("click", () => {
+    reset();
+});
+
+init();
